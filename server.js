@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const apiRouter = require('./apiRouter').router;
+const stuff = require('./stuff').router;
 
 
 const server = express();
@@ -15,7 +15,7 @@ server.get('/', function(req, res) {
       res.status(200).send('<h1>Bienvenus sur mon serveur !</h1>');
 });
 
-server.use('/api/', apiRouter);
+server.use('/api/', stuff);
 
 server.listen(8080, function(){
     console.log('*********** My Server running! ************');

@@ -157,7 +157,6 @@ module.exports = {
                     });
             },
             function (userFound, callback) {
-               
                 if (userFound) {
                     bcrypt.compare(password, userFound.password, (errBcrypt, resBcrypt) => {
                         callback(null, userFound, resBcrypt);
@@ -189,7 +188,6 @@ module.exports = {
     getUserProfil: (req, res) => {
 
         let headerAuth = req.headers['authorization'];
-        console.log(headerAuth);
         let userId = jwtUtils.getUserId(headerAuth);
 
          //console.log(userId);
@@ -209,6 +207,49 @@ module.exports = {
         })
             .catch((err) => {
                 return res.status(500).json({ ' error': 'User not fetch !' });
+            })
+    },
+
+    updateProfil: (req, res) =>{
+        let headerAuth = req.headers['authorization'],
+            userId = jwtUtils.getUserId(headerAuth);
+
+            let biography = req.body.biography;
+
+            asyncPack.waterfall([
+                function(callback){
+                    models.User.findOne({
+                        attributes: ['id', 'biography'],
+                        where :{ id:userId}
+                    })
+                    .then((userFound) =>{
+                        callback(null, userFound);
+                    })
+                    .catch((err) =>{
+                        return res.status(500).json({'error':'Unable to verify this user!'});
+                    });
+                },
+                function(userFound, callback){
+                    if(userFound){
+                        userFound.update({
+                            biography: (biography ? biography: userFound.biography)
+                        })
+                        .then(() =>{
+                            callback(userFound);
+                        })
+                        .catch((err) =>{
+                            res.status(500).json({'error': 'Cannot update user!'});
+                        });
+                    }else{
+                        res.status(400).json({'error':'User not found!'});
+                    }
+                },
+            ], function(userFound){
+                if(userFound){
+                    return res.status(201).json(userFound);
+                }else{
+                    return res.status(500).json({'error':'User don\'t update !'});
+                }
             })
     }
 }

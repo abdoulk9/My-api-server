@@ -20,12 +20,10 @@ module.exports = {
         return (auth != null) ? auth.replace('Bearer ', '') : null;
     },
     
-    
-
     getUserId: (auth) =>{
         //console.log(auth);
         let userId = -1 ;
-        let token = module.exports.parseAuth(auth); console.log('le token');console.log(token);
+        let token = module.exports.parseAuth(auth); 
         if(token != null){
             try{
                 var jwtToken = jwt.verify(token, JWT_SECRET_SIGN);
