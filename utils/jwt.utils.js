@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const  JWT_SECRET_SIGN = 'm276Me7teXY78dUts8W9xFL6Ju';
+const  JWT_SECRET_SIGN = '$2y$12$EIc2VhXrF7OZF52HeEIZUOlApO1pRV.8avEvQPa0x4YY9Gv5DvXVW';
 
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
         return (auth != null) ? auth.replace('Bearer ', '') : null;
     },
     
-    getUserId: (auth) =>{
+    getId: (auth) =>{
         //console.log(auth);
         let userId = -1 ;
         let token = module.exports.parseAuth(auth); 

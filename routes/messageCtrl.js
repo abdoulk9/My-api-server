@@ -12,7 +12,7 @@ module.exports = {
         console.log('Operation done!!');
 
         let headerAuth = req.headers['authorization'];
-        let userId = jwtUtils.getUserId(headerAuth);
+        let userId = jwtUtils.getId(headerAuth);
 
         let title = req.body.title;
         let content = req.body.content;
@@ -64,10 +64,10 @@ module.exports = {
     getMessages: (req, res) => {
 
         let fields = req.query.fields;
-        let limit = parseInt(req.query.limit); console.log(limit);
-        let offset = parseInt(req.query.offset);console.log(offset);
+        let limit = parseInt(req.query.limit); 
+        let offset = parseInt(req.query.offset);
         let  order = req.query.order; 
-        console.log(order);
+      
 
         if(limit > ITEMS_LIMIT){
             limit =ITEMS_LIMIT;
@@ -83,15 +83,16 @@ module.exports = {
                 attributes: ['username']
             }]
         }).then((messages) =>{
+            console.log('dans le then avant le if!!');
             if(messages){
                 res.status(200).json(messages);
             }else{
-                res.status(404).json({ 'error':' Not found massages! '});
+                res.status(404).json({ 'error':' No  massages found! '});
             }
         })
         .catch((err) =>{
+            console.log(err);
             res.status(500).json({ 'error': ' Fields invalid'});
         });
-
     }
 }

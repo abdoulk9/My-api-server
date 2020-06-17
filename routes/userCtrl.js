@@ -32,42 +32,7 @@ module.exports = {
         if (!PASSWORD_REGEX.test(password)) {
             return res.status(400).json({ 'error': ' Invalid password (must be  length 4 - 8  digits and include 1 number  ' });
         }
-        /*
-        models.User.findOne({
-            attributres: ['email'],
-            where: {
-                email: email
-            }
-        })
-            .then(function (userFound) {
-                if (!userFound) {
-                    bcrypt.hash(password, 5, function (err, bcryptedPassword) {
-                        var newUser = models.User.create({
-                            email: email,
-                            username: username,
-                            password: bcryptedPassword,
-                            biography: biography,
-                            isAdmin: 0
-                        })
-                            .then(function (newUser) {
-                                return res.status(201).json({ 'userId': newUser.id });
-                            })
-                            .catch(function (err) {
-                                return res.status(500).json({ 'error': 'Can not add new user!' });
-                            });
-                    });
-
-                } else {
-                    return res.status(409).json({
-                        'error': 'user already exist'
-                    });
-                }
-            })
-            .catch((err) => {
-                return res.status(500).json({
-                    'error': 'unable to verify this user!'
-                })
-            }); */
+        
 
         asyncPack.waterfall([
             function (callback) {
@@ -120,29 +85,7 @@ module.exports = {
             return res.status(400).json({ 'error': 'Parameter(s) missing(s)!' });
         }
 
-        /* models.User.findOne({
-             where: { email: email }
-         })
-             .then((userFound) => {
-                 if (userFound) {
-                     bcrypt.compare(password, userFound.password, (errBcrypt, resBcrypt) => {
-                         if (resBcrypt) {
-                             return res.status(200).json({
-                                 'userId': userFound.id,
-                                 'token': jwtUtils.generateToken(userFound)
-                             });
-                         } else {
-                             return res.status(403).json({ 'error': 'Invalid password!' });
-                         }
-                     });
-                 } else {
-                     return res.status(403).json({ 'error': 'User doesn\'t exist !' });
-                 }
-             })
-             .catch((err) => {
-                 return res.status(500).json({ 'error': 'Unable to verify this user!' });
-             });*/
-
+        
 
         asyncPack.waterfall([
             function (callback) {
@@ -185,10 +128,10 @@ module.exports = {
         });
     },
 
-    getUserProfil: (req, res) => {
+    getProfil: (req, res) => {
 
         let headerAuth = req.headers['authorization'];
-        let userId = jwtUtils.getUserId(headerAuth);
+        let userId = jwtUtils.getId(headerAuth);
 
          //console.log(userId);
         if (userId < 0) {
@@ -212,7 +155,7 @@ module.exports = {
 
     updateProfil: (req, res) =>{
         let headerAuth = req.headers['authorization'],
-            userId = jwtUtils.getUserId(headerAuth);
+            userId = jwtUtils.getId(headerAuth);
 
             let biography = req.body.biography;
 
