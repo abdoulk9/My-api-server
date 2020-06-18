@@ -63,7 +63,7 @@ module.exports = {
             function (msgFound, userFound, userAlreadyLiked, callback) {
                 if (!userAlreadyLiked) {
                     msgFound.addUser(userFound, { isLike: LIKED })
-                        .then((alreadyLiked) => {
+                        .then(() => {
                             callback(null, msgFound, userFound);
                         })
                         .catch((err) => {
